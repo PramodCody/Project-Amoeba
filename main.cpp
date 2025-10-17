@@ -2,64 +2,66 @@
 #include <iostream>
 using namespace std;
 
+//Setting Global Values
+int w = 800, h = 600;
+SDL_Window* window = SDL_CreateWindow("Project-Amoeba", w, h, SDL_WINDOW_RESIZABLE);
+SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
+
+class Line {
+public:
+    int x1, y1, x2, y2;
+
+    void draw_line(int a1, int b1, int a2, int b2) {
+        x1 = a1;
+        y1 = b1;
+        x2 = a2;
+        y2 = b2;
+
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 50);
+        SDL_RenderLine(renderer, x1, y1, x2, y2);   
+    }
+};
+
+
+
 int main(int argc, char* argv[]) {
-	// Initialize SDL
+    // Initialize SDL
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        cerr << "SDL could not initialize: " << SDL_GetError() << endl;
-        return 1;
+        return -1;
     }
+    int a = w / 4;
+    Line L1;
+    L1.draw_line(a, 0, a, h);
 
-    //Setting Global Values
-	int w = 800, h = 600;
+    Line L2;
+    L2.draw_line(2 * a, 0, 2 * a, h);
 
-	// Create a window
-    SDL_Window* window = SDL_CreateWindow("Project-Amoeba", w, h, SDL_WINDOW_RESIZABLE);
-
-	// Check if window was created successfully
-    if (!window) {
-        std::cerr << "Window could not be created: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return 1;
-    }
+    Line L3;
+    L3.draw_line(3 * a, 0, 3 * a, h);
 
 
-
-
-	// Create a renderer
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
-	//For Opacity Control
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//Set renderer Draw Color
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 50);
-	//Creating Lines
-	int nw = 10; // Number of Horizental lines
-    for (int i = 0; i < nw; i++) {
-        SDL_RenderLine(renderer, (i + 1) * w / (nw + 1), 0, (i + 1) * w / (nw + 1), h);
-    }
-	int nh = 8;  // Number of Vertical lines
-    for (int i = 0; i < nh; i++) {
-        SDL_RenderLine(renderer, 0, (i + 1) * h / (nh + 1), w, (i + 1) * h / (nh + 1));
-    }
-
-
-
-	//Show the Drawing on the Window
     SDL_RenderPresent(renderer);
-
-
-
-
     //Keep Running
     bool running = true;
     SDL_Event event;
 
     while (running) {
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT)
-                running = false;
-        }
+            switch (event.type) {
 
-        SDL_Delay(16); // ~60 FPS
+                case SDL_EVENT_QUIT:
+                    running = false;
+                    break;
+
+                case SDL_EVENT_KEY_DOWN:
+                    if (event.key.key == SDLK_RIGHT) {
+						printf("Right Arrow Pressed\n");
+
+                    }
+                SDL_Delay(16); // ~60 FPS
+            }
+        }
     }
 
     //Ending Code
