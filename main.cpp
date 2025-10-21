@@ -1,10 +1,12 @@
+//The Includes
 #include <SDL3/SDL.h>
 #include <iostream>
-#include "Line.h"
+#include "line.h"
 
+//The Functions from GridLines.cpp
 using namespace std;
 void InitialBG();
-//void ResizedWindow();
+void ResizedValue();
 void UpdateGrid();
 void MoveRight(int m);
 
@@ -20,6 +22,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    //For Initial Grid
     InitialBG();
     UpdateGrid();
 
@@ -35,6 +38,7 @@ int main(int argc, char* argv[]) {
                     w = event.window.data1;
                     h = event.window.data2;
                     InitialBG();
+                    ResizedValue();
                     UpdateGrid();
                     break;
 
@@ -42,6 +46,8 @@ int main(int argc, char* argv[]) {
                     running = false;
                     break;
 
+
+                    //The Movements
                 case SDL_EVENT_KEY_DOWN:
                     
                     if (event.key.key == SDLK_RIGHT) {

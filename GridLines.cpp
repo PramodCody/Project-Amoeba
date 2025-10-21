@@ -1,12 +1,16 @@
-#include "Line.h"
+#include "line.h"
 #include <SDL3/SDL.h>
+
+//To Calculate The GridLines Position
+int count = 0;
+int mm = 0;
 
 //Defining Line Class
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
-Line::Line() : x1(0), y1(0), x2(0), y2(0) {}
 
+Line::Line() : x1(0), y1(0), x2(0), y2(0) {}
 void Line::draw_line(int a1, int b1, int a2, int b2) {
 	x1 = a1;
 	y1 = b1;
@@ -33,16 +37,18 @@ void InitialBG() {
 
 }
 
-//void ResizedWindow() {
-//    extern int x, y;
-//    int w = x;
-//    int h = y;
-//    int a = w / 4;
-//
-//    L1.draw_line(a, 0, a, h);
-//    L2.draw_line(2 * a, 0, 2 * a, h);
-//    L3.draw_line(3 * a, 0, 3 * a, h);
-//}
+
+//Resized Lines New Position Calculation
+void ResizedValue() {
+    L1.x1 -= count * mm;
+    L1.x2 -= count * mm;
+
+    L2.x1 -= count * mm;
+    L2.x2 -= count * mm;
+
+    L3.x1 -= count * mm;
+    L3.x2 -= count * mm;
+}
 
 //TO Update Line Coordinates
 void UpdateGrid() {
@@ -58,6 +64,9 @@ void UpdateGrid() {
 
 //Move GridLines
 void MoveRight(int m) {
+    count += 1;
+    mm = m;
+
     L1.x1 -= m;
     L2.x1 -= m;
     L3.x1 -= m;
