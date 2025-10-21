@@ -30,10 +30,24 @@ void InitialBG() {
     L1.draw_line(a, 0, a, h);
     L2.draw_line(2 * a, 0, 2 * a, h);
     L3.draw_line(3 * a, 0, 3 * a, h);
+
 }
 
+//void ResizedWindow() {
+//    extern int x, y;
+//    int w = x;
+//    int h = y;
+//    int a = w / 4;
+//
+//    L1.draw_line(a, 0, a, h);
+//    L2.draw_line(2 * a, 0, 2 * a, h);
+//    L3.draw_line(3 * a, 0, 3 * a, h);
+//}
+
 //TO Update Line Coordinates
-void Show_Background() {
+void UpdateGrid() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
 
     L1.draw_line(L1.x1, L1.y1, L1.x2, L1.y2);
     L2.draw_line(L2.x1, L2.y1, L2.x2, L2.y2);
