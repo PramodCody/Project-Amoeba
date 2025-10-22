@@ -11,6 +11,8 @@ void ResizedValue();
 void UpdateGrid();
 
 //the movements function from GridLines.cpp
+void CheckX();
+void CheckY();
 void MoveRight();
 void MoveUp();
 
@@ -57,12 +59,14 @@ int main(int argc, char* argv[]) {
                 case SDL_EVENT_KEY_DOWN:
                     
                     if (event.key.key == SDLK_RIGHT) {
+                        CheckX();
                         MoveRight();
                         UpdateGrid();
                         break;
                     }
 
                     if (event.key.key == SDLK_UP) {
+                        CheckY();
                         MoveUp();
                         UpdateGrid();
                         break;

@@ -8,6 +8,7 @@ int countU = 0;
 int m = 5; //movement speed
 
 //Defining Line Class
+extern int w, h;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
@@ -28,27 +29,48 @@ void Line::draw_line(int a1, int b1, int a2, int b2) {
 
 //vertical lines
 int nv = 8;
-Line Lv[8];
+Line Lv[9];
 
 //horizental lines
 int nh = 6;
-Line Lh[6];
+Line Lh[7];
 
 
 // For Initial Lines
 void InitialBG() {
-    extern int w, h;
-
+    
     int a = w / (nv+1);
     //vertical lines
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nv; i++) {
         Lv[i].draw_line((i + 1) * a, 0, (i + 1) * a, h);
     }
 
     int b = h / (nh + 1);
     //horizental lines
-    for (int i = 0; i < nh; i++) {
+    for (int i = 0; i <= nh; i++) {
         Lh[i].draw_line(0, (i + 1) * b, w, (i + 1) * b);
+    }
+}
+
+//Checking right condition to spawn a new line in X axis
+void CheckX() {
+    for (int i = 0; i <= nv; i++) {
+
+        if (Lv[i].x1 <= 0 || Lv[i].x2 <= 0) {
+            Lv[i].x1 = w;
+            Lv[i].x2 = w;
+        }
+    }
+}
+
+//Checking right condition to spawn a new line in Y axis
+void CheckY() {
+    for (int i = 0; i <= nh; i++) {
+
+        if (Lh[i].y1 >= h || Lh[i].y2 >= h) {
+            Lh[i].y1 = 5; //why not 0?
+            Lh[i].y2 = 5;
+        }
     }
 }
 
@@ -57,13 +79,13 @@ void InitialBG() {
 void ResizedValue() {
 
     //vertical lines
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nv; i++) {
         Lv[i].x1 -= countR * m;
         Lv[i].x2 -= countR * m;
     }
 
     //horizental lines
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nh; i++) {
         Lh[i].y1 += countU * m;
         Lh[i].y2 += countU * m;
     }
@@ -75,12 +97,12 @@ void UpdateGrid() {
     SDL_RenderClear(renderer);
 
     //vertical lines
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nv; i++) {
         Lv[i].draw_line(Lv[i].x1, Lv[i].y1, Lv[i].x2, Lv[i].y2);
     }
 
     //horizental lines
-    for (int i = 0; i < nh; i++) {
+    for (int i = 0; i <= nh; i++) {
         Lh[i].draw_line(Lh[i].x1, Lh[i].y1, Lh[i].x2, Lh[i].y2);
     }
 
@@ -92,7 +114,7 @@ void UpdateGrid() {
 void MoveRight() {
     countR += 1;
 
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nv; i++) {
         Lv[i].x1 -= m;
         Lv[i].x2 -= m;
     }
@@ -101,7 +123,7 @@ void MoveRight() {
 void MoveUp() {
     countU += 1;
 
-    for (int i = 0; i < nv; i++) {
+    for (int i = 0; i <= nh; i++) {
         Lh[i].y1 += m;
         Lh[i].y2 += m;
     }
