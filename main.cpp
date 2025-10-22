@@ -3,12 +3,17 @@
 #include <iostream>
 #include "line.h"
 
-//The Functions from GridLines.cpp
 using namespace std;
+
+//The Functions from GridLines.cpp
 void InitialBG();
 void ResizedValue();
 void UpdateGrid();
-void MoveRight(int m);
+
+//the movements function from GridLines.cpp
+void MoveRight();
+void MoveUp();
+
 
 //Creating Window and Renderer
 int w = 400, h = 300;
@@ -47,11 +52,18 @@ int main(int argc, char* argv[]) {
                     break;
 
 
-                    //The Movements
+                //The Movements wrt Amoeba
+ 
                 case SDL_EVENT_KEY_DOWN:
                     
                     if (event.key.key == SDLK_RIGHT) {
-                        MoveRight(5);
+                        MoveRight();
+                        UpdateGrid();
+                        break;
+                    }
+
+                    if (event.key.key == SDLK_UP) {
+                        MoveUp();
                         UpdateGrid();
                         break;
                     }

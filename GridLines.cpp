@@ -1,9 +1,11 @@
 #include "line.h"
 #include <SDL3/SDL.h>
+#include <iostream>
 
 //To Calculate The GridLines Position
-int count = 0;
-int mm = 0;
+int countR = 0;
+int countU = 0;
+int m = 5; //movement speed
 
 //Defining Line Class
 extern SDL_Window* window;
@@ -23,31 +25,48 @@ void Line::draw_line(int a1, int b1, int a2, int b2) {
 }
 
 // Creating Line Objects
-Line L1, L2, L3;
+
+//vertical lines
+int nv = 8;
+Line Lv[8];
+
+//horizental lines
+int nh = 6;
+Line Lh[6];
 
 
 // For Initial Lines
 void InitialBG() {
     extern int w, h;
-    int a = w / 4;
 
-    L1.draw_line(a, 0, a, h);
-    L2.draw_line(2 * a, 0, 2 * a, h);
-    L3.draw_line(3 * a, 0, 3 * a, h);
+    int a = w / (nv+1);
+    //vertical lines
+    for (int i = 0; i < nv; i++) {
+        Lv[i].draw_line((i + 1) * a, 0, (i + 1) * a, h);
+    }
 
+    int b = h / (nh + 1);
+    //horizental lines
+    for (int i = 0; i < nh; i++) {
+        Lh[i].draw_line(0, (i + 1) * b, w, (i + 1) * b);
+    }
 }
 
 
 //Resized Lines New Position Calculation
 void ResizedValue() {
-    L1.x1 -= count * mm;
-    L1.x2 -= count * mm;
 
-    L2.x1 -= count * mm;
-    L2.x2 -= count * mm;
+    //vertical lines
+    for (int i = 0; i < nv; i++) {
+        Lv[i].x1 -= countR * m;
+        Lv[i].x2 -= countR * m;
+    }
 
-    L3.x1 -= count * mm;
-    L3.x2 -= count * mm;
+    //horizental lines
+    for (int i = 0; i < nv; i++) {
+        Lh[i].y1 += countU * m;
+        Lh[i].y2 += countU * m;
+    }
 }
 
 //TO Update Line Coordinates
@@ -55,23 +74,35 @@ void UpdateGrid() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    L1.draw_line(L1.x1, L1.y1, L1.x2, L1.y2);
-    L2.draw_line(L2.x1, L2.y1, L2.x2, L2.y2);
-    L3.draw_line(L3.x1, L3.y1, L3.x2, L3.y2);
+    //vertical lines
+    for (int i = 0; i < nv; i++) {
+        Lv[i].draw_line(Lv[i].x1, Lv[i].y1, Lv[i].x2, Lv[i].y2);
+    }
+
+    //horizental lines
+    for (int i = 0; i < nh; i++) {
+        Lh[i].draw_line(Lh[i].x1, Lh[i].y1, Lh[i].x2, Lh[i].y2);
+    }
 
     SDL_RenderPresent(renderer);
 }
 
-//Move GridLines
-void MoveRight(int m) {
-    count += 1;
-    mm = m;
+//Move GridLines in different direction
 
-    L1.x1 -= m;
-    L2.x1 -= m;
-    L3.x1 -= m;
+void MoveRight() {
+    countR += 1;
 
-    L1.x2 -= m;
-    L2.x2 -= m;
-    L3.x2 -= m;
+    for (int i = 0; i < nv; i++) {
+        Lv[i].x1 -= m;
+        Lv[i].x2 -= m;
+    }
+}
+
+void MoveUp() {
+    countU += 1;
+
+    for (int i = 0; i < nv; i++) {
+        Lh[i].y1 += m;
+        Lh[i].y2 += m;
+    }
 }
