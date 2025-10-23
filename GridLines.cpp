@@ -4,11 +4,13 @@
 
 //To Calculate The GridLines Position
 int countR = 0;
+int countL = 0;
 int countU = 0;
+int countD = 0;
 int m = 5; //movement speed
 
 //Defining Line Class
-extern int w, h;
+extern float w, h;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
@@ -20,7 +22,8 @@ void Line::draw_line(int a1, int b1, int a2, int b2) {
 	x2 = a2;
 	y2 = b2;
 
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 50);
 	SDL_RenderLine(renderer, x1, y1, x2, y2);
 
 }
@@ -39,41 +42,50 @@ Line Lh[7];
 // For Initial Lines
 void InitialBG() {
     
-    int a = w / (nv+1);
+    float a = w / (nv+1);
     //vertical lines
     for (int i = 0; i <= nv; i++) {
         Lv[i].draw_line((i + 1) * a, 0, (i + 1) * a, h);
     }
 
-    int b = h / (nh + 1);
+    float b = h / (nh + 1);
     //horizental lines
     for (int i = 0; i <= nh; i++) {
         Lh[i].draw_line(0, (i + 1) * b, w, (i + 1) * b);
     }
 }
 
-//Checking right condition to spawn a new line in X axis
-void CheckX() {
+//Checking right condition to spawn a new line in X or Y axis
+void CheckInfiniteCondition() {
+
+    //X axis
     for (int i = 0; i <= nv; i++) {
 
-        if (Lv[i].x1 <= 0 || Lv[i].x2 <= 0) {
+        if (Lv[i].x1 < 0 || Lv[i].x2 < 0) {
             Lv[i].x1 = w;
             Lv[i].x2 = w;
         }
-    }
-}
 
-//Checking right condition to spawn a new line in Y axis
-void CheckY() {
+        else if (Lv[i].x1 > w || Lv[i].x2 > w) {
+            Lv[i].x1 = 0;
+            Lv[i].x2 = 0;
+        }
+    }
+
+    //Y axis
     for (int i = 0; i <= nh; i++) {
 
-        if (Lh[i].y1 >= h || Lh[i].y2 >= h) {
-            Lh[i].y1 = 5; //why not 0?
-            Lh[i].y2 = 5;
+        if (Lh[i].y1 > h || Lh[i].y2 > h) {
+            Lh[i].y1 = 0;
+            Lh[i].y2 = 0;
+        }
+
+        else if (Lh[i].y1 < 0 || Lh[i].y2 < 0) {
+            Lh[i].y1 = h;
+            Lh[i].y2 = h;
         }
     }
 }
-
 
 //Resized Lines New Position Calculation
 void ResizedValue() {
@@ -109,7 +121,7 @@ void UpdateGrid() {
     SDL_RenderPresent(renderer);
 }
 
-//Move GridLines in different direction
+//Move GridLines in different direction wrt Amoeba
 
 void MoveRight() {
     countR += 1;
@@ -120,11 +132,29 @@ void MoveRight() {
     }
 }
 
+void MoveLeft() {
+    countL += 1;
+
+    for (int i = 0; i <= nv; i++) {
+        Lv[i].x1 += m;
+        Lv[i].x2 += m;
+    }
+}
+
 void MoveUp() {
     countU += 1;
 
     for (int i = 0; i <= nh; i++) {
         Lh[i].y1 += m;
         Lh[i].y2 += m;
+    }
+}
+
+void MoveDown() {
+    countD += 1;
+
+    for (int i = 0; i <= nh; i++) {
+        Lh[i].y1 -= m;
+        Lh[i].y2 -= m;
     }
 }

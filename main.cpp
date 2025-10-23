@@ -11,14 +11,15 @@ void ResizedValue();
 void UpdateGrid();
 
 //the movements function from GridLines.cpp
-void CheckX();
-void CheckY();
+void CheckInfiniteCondition();
 void MoveRight();
+void MoveLeft();
 void MoveUp();
+void MoveDown();
 
 
 //Creating Window and Renderer
-int w = 400, h = 300;
+float w = 400, h = 300;
 SDL_Window* window = SDL_CreateWindow("Project-Amoeba", w, h, SDL_WINDOW_RESIZABLE);
 SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
 
@@ -38,6 +39,7 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
 
     while (running) {
+
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
 
@@ -59,15 +61,29 @@ int main(int argc, char* argv[]) {
                 case SDL_EVENT_KEY_DOWN:
                     
                     if (event.key.key == SDLK_RIGHT) {
-                        CheckX();
+                        CheckInfiniteCondition();
                         MoveRight();
                         UpdateGrid();
                         break;
                     }
 
+                    if (event.key.key == SDLK_LEFT) {
+                        CheckInfiniteCondition();
+                        MoveLeft();
+                        UpdateGrid();
+                        break;
+                    }
+
                     if (event.key.key == SDLK_UP) {
-                        CheckY();
+                        CheckInfiniteCondition();
                         MoveUp();
+                        UpdateGrid();
+                        break;
+                    }
+
+                    if (event.key.key == SDLK_DOWN) {
+                        CheckInfiniteCondition();
+                        MoveDown();
                         UpdateGrid();
                         break;
                     }
