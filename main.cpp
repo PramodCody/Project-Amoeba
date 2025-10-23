@@ -54,44 +54,40 @@ int main(int argc, char* argv[]) {
                 case SDL_EVENT_QUIT:
                     running = false;
                     break;
-
-
-                //The Movements wrt Amoeba
- 
-                case SDL_EVENT_KEY_DOWN:
-                    
-                    if (event.key.key == SDLK_RIGHT) {
-                        CheckInfiniteCondition();
-                        MoveRight();
-                        UpdateGrid();
-                        break;
-                    }
-
-                    if (event.key.key == SDLK_LEFT) {
-                        CheckInfiniteCondition();
-                        MoveLeft();
-                        UpdateGrid();
-                        break;
-                    }
-
-                    if (event.key.key == SDLK_UP) {
-                        CheckInfiniteCondition();
-                        MoveUp();
-                        UpdateGrid();
-                        break;
-                    }
-
-                    if (event.key.key == SDLK_DOWN) {
-                        CheckInfiniteCondition();
-                        MoveDown();
-                        UpdateGrid();
-                        break;
-                    }
-
-                SDL_Delay(16); // ~60 FPS
-
             }
         }
+
+        //The Movements wrt Amoeba
+        const bool* state = SDL_GetKeyboardState(nullptr);
+
+        if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D]) {
+            CheckInfiniteCondition();
+            MoveRight();
+            UpdateGrid();
+        }
+        if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_A]) {
+            CheckInfiniteCondition();
+            MoveLeft();
+            UpdateGrid();
+        }
+
+        if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_W]) {
+            CheckInfiniteCondition();
+            MoveUp();
+            UpdateGrid();
+        }
+        if (state[SDL_SCANCODE_DOWN] || state[SDL_SCANCODE_S]) {
+            CheckInfiniteCondition();
+            MoveDown();
+            UpdateGrid();
+        }
+
+
+        
+
+        
+
+        SDL_Delay(16); // ~60 FPS
     }
 
     //Ending Code

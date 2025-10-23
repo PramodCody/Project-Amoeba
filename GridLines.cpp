@@ -7,7 +7,7 @@ int countR = 0;
 int countL = 0;
 int countU = 0;
 int countD = 0;
-int m = 5; //movement speed
+int m = 3; //movement speed
 
 //Defining Line Class
 extern float w, h;
